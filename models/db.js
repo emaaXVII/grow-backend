@@ -127,13 +127,15 @@ function dbAll(sql, params = []) {
 }
 
 function dbTransaction(fn) {
-  db.exec('BEGIN TRANSACTION');
+  const snapshot = db.export();
   try {
     fn();
-    db.exec('COMMIT');
     saveDB();
   } catch (e) {
-    try { db.exec('ROLLBACK'); } catch (_) { saveDB(); }
+    db.close();
+    db = new SQL.Database(snapshot);
+    db.run('PRAGMA journal_mode = WAL');
+    db.run('PRAGMA foreign_keys = ON');
     throw e;
   }
 }
