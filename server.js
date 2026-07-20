@@ -19,6 +19,14 @@ initDB();
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 
+app.use('/api', (req, res, next) => {
+  const hasBody = ['POST', 'PUT', 'PATCH'].includes(req.method);
+  if (req.path.length > 1 && !req.path.endsWith('/') && !req.path.includes('.')) {
+    req.url = req.url + '/';
+  }
+  next();
+});
+
 const limiter = rateLimit({
   windowMs: 60 * 1000,
   max: 60,
