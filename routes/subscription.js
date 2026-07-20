@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const { authenticate } = require('../middleware/auth');
 const { dbGet, dbRun } = require('../models/db');
 
-router.get(['/', '/status'], authenticate, (req, res) => {
+router.get('/', authenticate, (req, res) => {
   try {
     const sub = dbGet('SELECT * FROM subscriptions WHERE user_id = ?', [req.userId]);
 
