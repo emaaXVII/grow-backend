@@ -33,6 +33,10 @@ app.use('/api/sync', syncRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 app.use('/api/version', versionRoutes);
 
+app.get('/', (req, res) => {
+  res.json({ app: 'GROW Backend', status: 'running' });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
