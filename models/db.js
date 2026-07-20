@@ -127,13 +127,13 @@ function dbAll(sql, params = []) {
 }
 
 function dbTransaction(fn) {
-  db.exec('BEGIN');
+  db.run('BEGIN');
   try {
     fn();
-    db.exec('COMMIT');
+    db.run('COMMIT');
     saveDB();
   } catch (e) {
-    db.exec('ROLLBACK');
+    db.run('ROLLBACK');
     throw e;
   }
 }
